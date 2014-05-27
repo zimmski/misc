@@ -10,7 +10,7 @@ use File::Copy;
 use File::Slurp;
 use Text::CSV::Slurp;
 
-my $REVISION = 12;
+my $REVISION = 13;
 
 my $script_path = dirname(__FILE__);
 
@@ -88,6 +88,10 @@ my $script_path = dirname(__FILE__);
 
 		if (not $old_file_content or $old_file_content ne $message) {
 			File::Slurp::write_file("$file.txt", $message);
+
+			unlink("$file.tmp.wav");
+			unlink("$file.wav");
+
 			`swift -n Allison-8KHz -f $file.txt -o $file.tmp.wav`;
 			`sox $file.tmp.wav $file.wav trim 00:08.2 speed 0.95`;
 		}
