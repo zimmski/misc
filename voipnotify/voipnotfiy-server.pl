@@ -10,7 +10,7 @@ use File::Copy;
 use File::Slurp;
 use Text::CSV::Slurp;
 
-my $REVISION = 13;
+my $REVISION = 14;
 
 my $script_path = dirname(__FILE__);
 
@@ -86,17 +86,17 @@ my $script_path = dirname(__FILE__);
 
 		my $old_file_content = (-f "$file.txt") ? File::Slurp::read_file("$file.txt") : undef;
 
-		if (not $old_file_content or $old_file_content ne $message) {
+		if (not $old_file_content or $old_file_content ne $message or not -f "$file.gsm") {
 			File::Slurp::write_file("$file.txt", $message);
 
 			unlink("$file.tmp.wav");
 			unlink("$file.wav");
 
-			`swift -n Allison-8KHz -f $file.txt -o $file.tmp.wav`;
-			`sox $file.tmp.wav $file.wav trim 00:08.2 speed 0.95`;
-		}
+			`/usr/local/bin/swift -n Allison-8KHz -f $file.txt -o $file.tmp.wav`;
+			`/usr/bin/sox $file.tmp.wav $file.wav trim 00:08.2 speed 0.95`;
 
-		`sox $file.wav -r 8000 -c 1 $file.gsm`;
+			`/usr/bin/sox $file.wav -r 8000 -c 1 $file.gsm`;
+		}
 
 		if (@numbers) {
 			for my $number (@numbers) {

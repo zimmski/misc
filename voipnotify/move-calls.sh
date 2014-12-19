@@ -2,7 +2,12 @@
 
 # if [ -e /home/voipnotify/calls/monitoring-message.gsm ]
 # then
-	mv -f /home/voipnotify/calls/monitoring-message.gsm /var/lib/asterisk/sounds/monitoring-message.gsm
+	rm /var/lib/asterisk/sounds/monitoring-message.gsm
+	cp /home/voipnotify/calls/monitoring-message.gsm /var/lib/asterisk/sounds/monitoring-message.gsm
 	sleep 2
-	mv /home/voipnotify/calls/*.call /var/spool/asterisk/outgoing/
+	for f in /home/voipnotify/calls/*.call; do
+		[ -e "$f" ] && mv /home/voipnotify/calls/*.call /var/spool/asterisk/outgoing/
+
+		break
+	done
 # fi
