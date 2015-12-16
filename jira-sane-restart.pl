@@ -90,9 +90,10 @@ for my $i ($log =~ m/^(.*error.*)$/mgi) {
 	$i =~ s/^\s+//;
 	$i =~ s/\s+$//;
 
-	if ($i and (
-		$i !~ m/^jira.projectkey.warning\s+:\s+admin.errors.must.specify.unique.project.key$/
-	)) {
+	if ($i and
+		$i !~ m/^jira.projectkey.warning\s+:\s+admin.errors.must.specify.unique.project.key$/ and
+		$i !~ m/1{.+"error":null/
+	) {
 		push(@errors, $i);
 	}
 }
